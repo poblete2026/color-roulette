@@ -1,1 +1,150 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Color Roulette</title>
 
+<style>
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f7f3ef;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+}
+
+.box{
+  width:90%;
+  max-width:500px;
+  text-align:center;
+  background:white;
+  padding:25px;
+  border-radius:25px;
+  box-shadow:0 10px 30px #0002;
+}
+
+h1{font-size:30px;}
+
+.wheel{
+  width:330px;
+  max-width:80vw;
+  aspect-ratio:1;
+  border-radius:50%;
+  margin:25px auto;
+  border:8px solid white;
+  box-shadow:0 4px 15px #0003;
+  transition:transform 2s cubic-bezier(.12,.7,.18,1);
+
+  background:conic-gradient(
+    #e53935 0 45deg,
+    #f39c12 45deg 90deg,
+    #f1c40f 90deg 135deg,
+    #2ecc71 135deg 180deg,
+    #1abc9c 180deg 225deg,
+    #3498db 225deg 270deg,
+    #9b59b6 270deg 315deg,
+    #e91e63 315deg 360deg
+  );
+}
+
+.pointer{
+  width:0;
+  height:0;
+  border-left:15px solid transparent;
+  border-right:15px solid transparent;
+  border-top:28px solid #222;
+  margin:auto;
+  position:relative;
+  top:15px;
+  z-index:2;
+}
+
+button{
+  border:0;
+  border-radius:30px;
+  padding:14px 35px;
+  font-size:18px;
+  font-weight:bold;
+  background:#292525;
+  color:white;
+  cursor:pointer;
+}
+
+button:disabled{
+  opacity:.5;
+}
+
+#result{
+  margin-top:20px;
+  font-size:22px;
+  font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+<h1>🎨 Color Roulette</h1>
+<p>Spin the wheel and let fate choose!</p>
+
+<div class="pointer"></div>
+
+<div id="wheel" class="wheel"></div>
+
+<button id="spin">🎡 SPIN</button>
+
+<div id="result">Ready?</div>
+
+</div>
+
+<script>
+
+const wheel = document.getElementById("wheel");
+const button = document.getElementById("spin");
+const result = document.getElementById("result");
+
+const colors = [
+"Red",
+"Orange",
+"Yellow",
+"Green",
+"Teal",
+"Blue",
+"Purple",
+"Pink"
+];
+
+let rotation = 0;
+
+button.onclick = function(){
+
+  button.disabled = true;
+  result.textContent = "Spinning...";
+
+  const i = Math.floor(Math.random() * 8);
+
+  const target = 360 - i * 45 - 22.5;
+
+  rotation += 720 + (target - rotation % 360 + 360) % 360;
+
+  wheel.style.transform = `rotate(${rotation}deg)`;
+
+  setTimeout(function(){
+
+    result.textContent = "🎉 Color: " + colors[i] + "!";
+
+    button.disabled = false;
+
+  },2100);
+
+};
+
+</script>
+
+</body>
+</html>
